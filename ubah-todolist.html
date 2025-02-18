@@ -81,17 +81,26 @@
       <input type="text" class="form-control" id="input-nama">
     </div>
     <div class="mb-3">
-      <label class="form-label">Prioritas</label>
-      <input type="text" class="form-control" id="input-prioritas">
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Status</label>
-      <input type="text" class="form-control" id="input-status">
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Tanggal</label>
-      <input type="text" class="form-control" id="input-tanggal">
-    </div>
+  <label class="form-label">Prioritas</label>
+  <select id="input-prioritas" class="form-select" aria-label="Default select example">
+    <option selected>Open this select menu</option>
+    <option value="Tinggi">tinggi</option>
+    <option value="Sedang">sedang</option>
+    <option value="Rendah">rendah</option>
+  </select>
+</div>
+      <div class="mb-3">
+    <label class="form-label">Status</label>
+    <select id="input-status" class="form-select" aria-label="Default select example">
+      <option selected>Open this select menu</option>
+      <option value="Selesai">selesai</option>
+      <option value="Belum Selesai">belum selesai</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tanggal</label>
+    <input type="date" class="form-control" id="input-tanggal">
+  </div>
     <button type="submit" class="btn btn-primary" id="tombol-ubah">Ubah</button>
   </form>
   <a class="mt-1" href="form-todolist.html">Lihat Data</a>
