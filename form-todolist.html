@@ -79,7 +79,7 @@
   <form class="mb-3">
     <div class="mb-3">
       <label class="form-label">Nama</label>
-      <input type="text" class="form-control" id="input-nama" required>
+      <input type="text" class="form-control" id="input-nama">
     </div>
     <div class="mb-3">
       <label class="form-label">Prioritas</label>
@@ -117,7 +117,7 @@
     
     tombolTambah.addEventListener('click', async function(e) {
       await tambahData(elemenNama.value, elemenPrioritas.value, elemenStatus.value, elemenTanggal.value);
-      window.location.href ='index.html';
+     // window.location.href = 'index.html';
     });
   </script>
   
