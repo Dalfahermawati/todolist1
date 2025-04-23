@@ -16,38 +16,38 @@
     margin: 0;
     padding: 20px;
   }
-
+  
   h1 {
     color: #1976d2;
     text-align: center;
   }
-
+  
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   }
-
+  
   th,
   td {
     padding: 10px;
     text-align: center;
     border: 1px solid #89cff0;
   }
-
+  
   th {
     background-color: #81d4fa;
   }
-
+  
   tr:nth-child(even) {
     background-color: #b3e5fc;
   }
-
+  
   tr:hover {
     background-color: #b2ebf2;
   }
-
+  
   .button {
     background-color: #1976d2;
     color: white;
@@ -60,11 +60,11 @@
     cursor: pointer;
     border-radius: 5px;
   }
-
+  
   .button-danger {
     background-color: #e57373;
   }
-
+  
   .add-data {
     display: block;
     text-align: center;
@@ -74,12 +74,12 @@
 </style>
 
 <body class="m-3">
-  <h1>Form To-Do-List</h1>
-
+  <h1>Form To Do List</h1>
+  
   <form class="mb-3">
     <div class="mb-3">
       <label class="form-label">Nama</label>
-      <input type="text" class="form-control" id="input-nama">
+      <input type="text" class="form-control" id="input-nama" required>
     </div>
     <div class="mb-3">
       <label class="form-label">Prioritas</label>
@@ -105,23 +105,22 @@
     <button type="submit" class="btn btn-primary" id="tombol-tambah">Simpan</button>
   </form>
   <a href="index.html">Data To Do List</a>
-
+  
   <script type="module">
     import { tambahData } from './main.js';
-
+    
     let tombolTambah = document.getElementById('tombol-tambah');
     let elemenNama = document.getElementById('input-nama');
     let elemenPrioritas = document.getElementById('input-prioritas');
     let elemenStatus = document.getElementById('input-status');
-    let elemenTanggal = document.getElementById('input-tanggal')
-
+    let elemenTanggal = document.getElementById('input-tanggal');
+    
     tombolTambah.addEventListener('click', async function(e) {
-      e.preventDefault();
       await tambahData(elemenNama.value, elemenPrioritas.value, elemenStatus.value, elemenTanggal.value);
-      //  window.location.href = 'index.html'
-    })
+      window.location.href ='index.html';
+    });
   </script>
-
+  
 </body>
 
 </html>
