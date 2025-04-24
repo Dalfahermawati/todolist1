@@ -76,33 +76,37 @@
 <body class="m-3">
   <h1>Form To Do List</h1>
   
-  <form class="mb-3">
+  <form class="mb-3" id="todo-form">
     <div class="mb-3">
       <label class="form-label">Nama</label>
       <input type="text" class="form-control" id="input-nama">
+      <small class="text-danger d-none" id="error-nama">Nama harus diisi!</small>
     </div>
     <div class="mb-3">
       <label class="form-label">Prioritas</label>
       <select id="input-prioritas" class="form-select" aria-label="Default select example">
-        <option selected>Open this select menu</option>
+        <option selected value="">Open this select menu</option>
         <option value="Tinggi">tinggi</option>
         <option value="Sedang">sedang</option>
         <option value="Rendah">rendah</option>
       </select>
+      <small class="text-danger d-none" id="error-prioritas">Prioritas harus dipilih!</small>
     </div>
     <div class="mb-3">
       <label class="form-label">Status</label>
       <select id="input-status" class="form-select" aria-label="Default select example">
-        <option selected>Open this select menu</option>
+        <option selected value="">Open this select menu</option>
         <option value="Selesai">selesai</option>
         <option value="Belum Selesai">belum selesai</option>
       </select>
+      <small class="text-danger d-none" id="error-status">Status harus dipilih!</small>
     </div>
     <div class="mb-3">
       <label class="form-label">Tanggal</label>
       <input type="date" class="form-control" id="input-tanggal">
+      <small class="text-danger d-none" id="error-tanggal">Tanggal harus diisi!</small>
     </div>
-    <button type="submit" class="btn btn-primary" id="tombol-tambah">Simpan</button>
+    <button type="button" class="btn btn-primary" id="tombol-tambah">Simpan</button>
   </form>
   <a href="index.html">Data To Do List</a>
   
@@ -115,9 +119,48 @@
     let elemenStatus = document.getElementById('input-status');
     let elemenTanggal = document.getElementById('input-tanggal');
     
-    tombolTambah.addEventListener('click', async function(e) {
-      await tambahData(elemenNama.value, elemenPrioritas.value, elemenStatus.value, elemenTanggal.value);
-     // window.location.href = 'index.html';
+    let errorNama = document.getElementById('error-nama');
+    let errorPrioritas = document.getElementById('error-prioritas');
+    let errorStatus = document.getElementById('error-status');
+    let errorTanggal = document.getElementById('error-tanggal');
+    
+    tombolTambah.addEventListener('click', async function (e) {
+      e.preventDefault();
+    
+      let isValid = true;
+    
+      if (elemenNama.value.trim() === '') {
+        errorNama.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorNama.classList.add('d-none');
+      }
+    
+      if (elemenPrioritas.value === '') {
+        errorPrioritas.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorPrioritas.classList.add('d-none');
+      }
+    
+      if (elemenStatus.value === '') {
+        errorStatus.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorStatus.classList.add('d-none');
+      }
+    
+      if (elemenTanggal.value === '') {
+        errorTanggal.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorTanggal.classList.add('d-none');
+      }
+    
+      if (isValid) {
+        await tambahData(elemenNama.value, elemenPrioritas.value, elemenStatus.value, elemenTanggal.value);
+        window.location.href = 'index.html';
+      }
     });
   </script>
   

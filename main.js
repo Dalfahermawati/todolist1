@@ -70,6 +70,13 @@ export async function ubahData(docId, nama, prioritas, status, tanggal) {
 export async function ambilData(docId) {
   const docRef = await doc(db, "todolist1", docId);
   const docSnap = await getDoc(docRef);
-
+  
   return await docSnap.data();
+}
+
+export async function ubahStatus(docId, status) {
+  const docRef = doc(db, "todolist1", docId);
+  await updateDoc(docRef, {
+    status: status,
+  });
 }

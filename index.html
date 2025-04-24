@@ -78,7 +78,10 @@
 
 <body>
   <h1>To Do List</h1>
-  <table class="table table table-striped" id="todolist1">
+  
+  <!-- Tabel untuk tugas yang belum selesai -->
+  <h2>Tugas Belum Selesai</h2>
+  <table class="table table-striped" id="todolist1">
     <thead>
       <tr>
         <th scope="col">No</th>
@@ -86,49 +89,125 @@
         <th scope="col">Prioritas</th>
         <th scope="col">Status</th>
         <th scope="col">Tanggal</th>
-        <th scope="col"></th>
         <th scope="col">Tombol</th>
       </tr>
     </thead>
     <tbody>
     </tbody>
   </table>
-  <a href="form-todolist.html">tambah data</a>
+
+  <!-- Tabel untuk tugas yang sudah selesai -->
+  <h2>Tugas Selesai</h2>
+  <table class="table table-striped" id="todolist-selesai">
+    <thead>
+      <tr>
+        <th scope="col">No</th>
+        <th scope="col">Nama Kegiatan</th>
+        <th scope="col">Prioritas</th>
+        <th scope="col">Status</th>
+        <th scope="col">Tanggal</th>
+        <th scope="col">Tombol</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <a href="form-todolist.html">Tambah Data</a>
+
   <script type="module">
-    import { ambilDaftarData, formatAngka, hapusData } from './main.js';
+    import { ambilDaftarData, hapusData, ubahStatus } from './main.js';
 
-    $(document).ready(async function() {
-      let elemenData = $("#todolist1 > tbody");
+    $(document).ready(async function () {
+      // Elemen tabel untuk tugas yang belum selesai dan selesai
+      let elemenDataBelumSelesai = $("#todolist1 > tbody");
+      let elemenDataSelesai = $("#todolist-selesai > tbody");
+
+      // Ambil data dari Firestore
       let dataToDoList = await ambilDaftarData();
-      let nomor = 1;
-      dataToDoList.forEach((data) => {
-        elemenData.append(
-          '<tr>' +
-          '<th>' + nomor + '</th>' +
-          '<td>' + data.nama + '</td>' +
-          '<td>' + data.prioritas + '</td>' +
-          '<td>' + data.status + '</td>' +
-          '<td>' + data.tanggal + '</td>' +
-          '<td>' + '<td class="stack-up">' +
-          ' <a href="#" class="me-2 link-ubah" data="' +
-          data.id +
-          '">ubah</a> ' +
-          ' <button class="btn btn-primary tombol-hapus" data="' +
-          data.id +
-          '">Hapus</button>' + '</td>' +
-          '</tr>'
-        );
-        nomor = nomor + 1;
+
+      // Sortir data berdasarkan prioritas (Tinggi, Sedang, Rendah)
+      dataToDoList.sort((a, b) => {
+        const priorityOrder = { "Tinggi": 1, "Sedang": 2, "Rendah": 3 };
+        return priorityOrder[a.prioritas] - priorityOrder[b.prioritas];
       });
-      $('.tombol-hapus').click(async function() {
-        await hapusData($(this).attr('data'));
-        location.reload();
-      })
 
-      $('.link-ubah').click(async function() {
-        window.location.replace('ubah-todolist.html?docId=' + $(this).attr('data'));
-      })
+      let nomorBelumSelesai = 1; // Nomor urut untuk tugas belum selesai
+      let nomorSelesai = 1; // Nomor urut untuk tugas selesai
 
+      // Iterasi data dan masukkan ke tabel
+      dataToDoList.forEach((data) => {
+        if (data.status === "Belum Selesai") {
+          // Tambahkan baris untuk tugas yang belum selesai
+          elemenDataBelumSelesai.append(
+            `<tr>
+              <th>${nomorBelumSelesai}</th>
+              <td>${data.nama}</td>
+              <td>${data.prioritas}</td>
+              <td>
+                <!-- Tombol untuk mengubah status menjadi Selesai -->
+                <button class="btn btn-warning ubah-status" data-id="${data.id}" data-status="Selesai">${data.status}</button>
+              </td>
+              <td>${data.tanggal}</td>
+              <td>
+                <!-- Tombol untuk menghapus data -->
+                <button class="btn btn-danger tombol-hapus" data-id="${data.id}">Hapus</button>
+                <!-- Tombol untuk mengubah data -->
+                <button class="btn btn-primary tombol-ubah" data-id="${data.id}">Ubah</button>
+              </td>
+            </tr>`
+          );
+          nomorBelumSelesai++;
+        } else {
+          // Tambahkan baris untuk tugas yang sudah selesai
+          elemenDataSelesai.append(
+            `<tr>
+              <th>${nomorSelesai}</th>
+              <td>${data.nama}</td>
+              <td>${data.prioritas}</td>
+              <td>
+                <!-- Tombol untuk mengubah status menjadi Belum Selesai -->
+                <button class="btn btn-success ubah-status" data-id="${data.id}" data-status="Belum Selesai">${data.status}</button>
+              </td>
+              <td>${data.tanggal}</td>
+              <td>
+                <!-- Tombol untuk menghapus data -->
+                <button class="btn btn-danger tombol-hapus" data-id="${data.id}">Hapus</button>
+                <!-- Tombol untuk mengubah data -->
+                <button class="btn btn-primary tombol-ubah" data-id="${data.id}">Ubah</button>
+              </td>
+            </tr>`
+          );
+          nomorSelesai++;
+        }
+      });
+
+      // Event untuk mengubah status
+      $('.ubah-status').click(async function () {
+        const docId = $(this).data('id'); // Ambil ID dokumen
+        const newStatus = $(this).data('status'); // Ambil status baru
+
+        // Perbarui status di Firestore
+        await ubahStatus(docId, newStatus);
+        location.reload(); // Reload halaman untuk memperbarui tampilan
+      });
+
+      // Event untuk menghapus data
+      $('.tombol-hapus').click(async function () {
+        const docId = $(this).data('id'); // Ambil ID dokumen
+
+        // Hapus data dari Firestore
+        await hapusData(docId);
+        location.reload(); // Reload halaman untuk memperbarui tampilan
+      });
+
+      // Event untuk mengubah data
+      $('.tombol-ubah').click(function () {
+        const docId = $(this).data('id'); // Ambil ID dokumen
+
+        // Arahkan ke halaman form dengan parameter docId
+        window.location.href = `form-todolist.html?docId=${docId}`;
+      });
     });
   </script>
 </body>
