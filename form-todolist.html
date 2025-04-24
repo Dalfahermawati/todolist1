@@ -11,7 +11,7 @@
 </head>
 <style>
   body {
-    background-color: #e1f5fe;
+    background-color: skyblue;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
@@ -124,39 +124,39 @@
     let errorStatus = document.getElementById('error-status');
     let errorTanggal = document.getElementById('error-tanggal');
     
-    tombolTambah.addEventListener('click', async function (e) {
+    tombolTambah.addEventListener('click', async function(e) {
       e.preventDefault();
-    
+      
       let isValid = true;
-    
+      
       if (elemenNama.value.trim() === '') {
         errorNama.classList.remove('d-none');
         isValid = false;
       } else {
         errorNama.classList.add('d-none');
       }
-    
+      
       if (elemenPrioritas.value === '') {
         errorPrioritas.classList.remove('d-none');
         isValid = false;
       } else {
         errorPrioritas.classList.add('d-none');
       }
-    
+      
       if (elemenStatus.value === '') {
         errorStatus.classList.remove('d-none');
         isValid = false;
       } else {
         errorStatus.classList.add('d-none');
       }
-    
+      
       if (elemenTanggal.value === '') {
         errorTanggal.classList.remove('d-none');
         isValid = false;
       } else {
         errorTanggal.classList.add('d-none');
       }
-    
+      
       if (isValid) {
         await tambahData(elemenNama.value, elemenPrioritas.value, elemenStatus.value, elemenTanggal.value);
         window.location.href = 'index.html';

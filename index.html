@@ -14,7 +14,7 @@
 
 <style>
   body {
-    background-color: lightblue;
+    background-color: skyblue;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
@@ -85,9 +85,8 @@
   <h1>To Do List</h1>
   
   <!-- Tabel untuk tugas yang belum selesai -->
-  <h2>Tugas Belum Selesai👉🏻👈🏻</h2>
+  <h2>Tugas Belum Selesai</h2>
   <table class="table-info table-striped" id="todolist1">
-    
     <thead>
       <tr>
         <th scope="col">No</th>
@@ -103,7 +102,7 @@
   </table>
   
   <!-- Tabel untuk tugas yang sudah selesai -->
-  <h2>Tugas Selesai🤙🏻</h2>
+  <h2>Tugas Selesai</h2>
   <table class="table-info table-striped" id="todolist-selesai">
     <thead>
       <tr>
@@ -212,7 +211,7 @@
         const docId = $(this).data('id'); // Ambil ID dokumen
         
         // Arahkan ke halaman form dengan parameter docId
-        window.location.href = `form-todolist.html?docId=${docId}`;
+        window.location.href = `ubah-todolist.html?docId=${docId}`;
       });
     });
   </script>

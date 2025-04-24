@@ -1,14 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ubah To Do List</title>
+  
+  <title>Ubah To-Do List</title>
+  
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
+
 <style>
   body {
     background-color: lightpink;
@@ -16,38 +21,38 @@
     margin: 0;
     padding: 20px;
   }
-
+  
   h1 {
     color: #1976d2;
     text-align: center;
   }
-
+  
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
   }
-
+  
   th,
   td {
     padding: 10px;
     text-align: center;
     border: 1px solid #89cff0;
   }
-
+  
   th {
     background-color: #81d4fa;
   }
-
+  
   tr:nth-child(even) {
     background-color: #b3e5fc;
   }
-
+  
   tr:hover {
     background-color: #b2ebf2;
   }
-
+  
   .button {
     background-color: #1976d2;
     color: white;
@@ -60,11 +65,11 @@
     cursor: pointer;
     border-radius: 5px;
   }
-
+  
   .button-danger {
     background-color: #e57373;
   }
-
+  
   .add-data {
     display: block;
     text-align: center;
@@ -73,58 +78,135 @@
   }
 </style>
 
-<body class="m-4">
-  <h1>Ubah Data 🦋</h1>
-  <form class="mb-3">
+<body class="m-3">
+  <h1>Ubah To Do List 🦋</h1>
+  
+  <!-- Form untuk mengubah data -->
+  <form class="mb-3" id="todo-form">
+    <!-- Input untuk Nama -->
     <div class="mb-3">
       <label class="form-label">Nama</label>
       <input type="text" class="form-control" id="input-nama">
+      <small class="text-danger d-none" id="error-nama">Nama harus diisi!</small>
     </div>
+    
+    <!-- Input untuk Prioritas -->
     <div class="mb-3">
-  <label class="form-label">Prioritas</label>
-  <select id="input-prioritas" class="form-select" aria-label="Default select example">
-    <option selected>Open this select menu</option>
-    <option value="Tinggi">tinggi</option>
-    <option value="Sedang">sedang</option>
-    <option value="Rendah">rendah</option>
-  </select>
-</div>
-      <div class="mb-3">
-    <label class="form-label">Status</label>
-    <select id="input-status" class="form-select" aria-label="Default select example">
-      <option selected>Open this select menu</option>
-      <option value="Selesai">selesai</option>
-      <option value="Belum Selesai">belum selesai</option>
-    </select>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Tanggal</label>
-    <input type="date" class="form-control" id="input-tanggal">
-  </div>
-    <button type="submit" class="btn btn-primary" id="tombol-ubah">Ubah</button>
+      <label class="form-label">Prioritas</label>
+      <select id="input-prioritas" class="form-select" aria-label="Default select example">
+        <option selected value="">Open this select menu</option>
+        <option value="Tinggi">tinggi</option>
+        <option value="Sedang">sedang</option>
+        <option value="Rendah">rendah</option>
+      </select>
+      <small class="text-danger d-none" id="error-prioritas">Prioritas harus dipilih!</small>
+    </div>
+    
+    <!-- Input untuk Status -->
+    <div class="mb-3">
+      <label class="form-label">Status</label>
+      <select id="input-status" class="form-select" aria-label="Default select example">
+        <option selected value="">Open this select menu</option>
+        <option value="Selesai">selesai</option>
+        <option value="Belum Selesai">belum selesai</option>
+      </select>
+      <small class="text-danger d-none" id="error-status">Status harus dipilih!</small>
+    </div>
+    
+    <!-- Input untuk Tanggal -->
+    <div class="mb-3">
+      <label class="form-label">Tanggal</label>
+      <input type="date" class="form-control" id="input-tanggal">
+      <small class="text-danger d-none" id="error-tanggal">Tanggal harus diisi!</small>
+    </div>
+    
+    <!-- Tombol untuk mengubah data -->
+    <button type="button" class="btn btn-primary" id="tombol-ubah">Ubah</button>
   </form>
-  <a class="mt-1" href="form-todolist.html">Lihat Data</a>
+  
+  <!-- Link kembali ke halaman utama -->
+  <a href="index.html">Data To Do List</a>
+  
   <script type="module">
     import { ambilData, ubahData } from './main.js';
+    
+    // Ambil elemen form
     let tombolUbah = document.getElementById('tombol-ubah');
     let elemenNama = document.getElementById('input-nama');
     let elemenPrioritas = document.getElementById('input-prioritas');
     let elemenStatus = document.getElementById('input-status');
-    let elemenTanggal = document.getElementById('input-tanggal')
-    const queryString = window.location.search
+    let elemenTanggal = document.getElementById('input-tanggal');
+    
+    let errorNama = document.getElementById('error-nama');
+    let errorPrioritas = document.getElementById('error-prioritas');
+    let errorStatus = document.getElementById('error-status');
+    let errorTanggal = document.getElementById('error-tanggal');
+    
+    // Ambil docId dari URL
+    const queryString = window.location.search;
     const parameterURL = new URLSearchParams(queryString);
-    const docId = parameterURL.get('docId')
-    const data = await ambilData(docId);
-
-    elemenNama.value = data.nama;
-    elemenPrioritas.value = data.prioritas;
-    elemenStatus.value = data.status;
-    elemenTanggal.value = data.tanggal;
-
-    tombolUbah.addEventListener('click', async function(el) {
-      el.preventDefault();
-      await ubahData(docId, elemenNama.value, elemenPrioritas.value, elemenStatus.value, elemenTanggal.value);
-      window.location.href = 'index.html';
+    const docId = parameterURL.get('docId');
+    
+    try {
+      // Ambil data berdasarkan docId dan tampilkan di form
+      const data = await ambilData(docId);
+      
+      if (data) {
+        elemenNama.value = data.nama || '';
+        elemenPrioritas.value = data.prioritas || '';
+        elemenStatus.value = data.status || '';
+        elemenTanggal.value = data.tanggal || '';
+      } else {
+        alert('Data tidak ditemukan!');
+      }
+    } catch (error) {
+      console.error(error.message);
+      alert('Terjadi kesalahan saat mengambil data!');
+    }
+    
+    // Event listener untuk tombol ubah
+    tombolUbah.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      let isValid = true;
+      
+      // Validasi input Nama
+      if (elemenNama.value.trim() === '') {
+        errorNama.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorNama.classList.add('d-none');
+      }
+      
+      // Validasi input Prioritas
+      if (elemenPrioritas.value === '') {
+        errorPrioritas.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorPrioritas.classList.add('d-none');
+      }
+      
+      // Validasi input Status
+      if (elemenStatus.value === '') {
+        errorStatus.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorStatus.classList.add('d-none');
+      }
+      
+      // Validasi input Tanggal
+      if (elemenTanggal.value === '') {
+        errorTanggal.classList.remove('d-none');
+        isValid = false;
+      } else {
+        errorTanggal.classList.add('d-none');
+      }
+      
+      // Jika semua validasi lolos, perbarui data
+      if (isValid) {
+        await ubahData(docId, elemenNama.value, elemenPrioritas.value, elemenStatus.value, elemenTanggal.value);
+        window.location.href = 'index.html';
+      }
     });
   </script>
 </body>
